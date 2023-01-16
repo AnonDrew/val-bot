@@ -1,4 +1,4 @@
-import { token } from "./config.json";
+import { token } from "../config.json";
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { importContents } from "./utils";
 import * as listeners from "./listeners";

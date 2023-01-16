@@ -1,3 +1,3 @@
 export { ping } from "./ping";
-export { valgrind } from "./valgrind";
+export { valgrindDM } from "./valgrind";
 export { upload } from "./upload";

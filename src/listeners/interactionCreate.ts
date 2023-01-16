@@ -4,7 +4,6 @@ import * as handlers from "../handlers";
 
 function cmdOrSubCmd(interaction: ChatInputCommandInteraction): Function {
     const subcommand = interaction.options.getSubcommand(false);
-
     if (subcommand !== null) {
         return importContents<Function>(handlers).find(handler => handler.name === subcommand);
     }

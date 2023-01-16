@@ -22,13 +22,13 @@ export function messageCreate(client: Client) {
             return;
         }
         if (!validAtts(message, [ "text/x-c++src; charset=utf-8" ])) {
-            message.channel.send("I only work with single .cpp attachment messages right now.");
+            message.channel.send("My DMs only work with single .cpp attachment messages right now.");
             return;
         }
 
         const attachment = message.attachments.first();
         if (attachment.contentType === "text/x-c++src; charset=utf-8") {
-            handlers.valgrind(message);
+            handlers.valgrindDM(message);
 
             /*let src = message.attachments.first();
             let srcRaw = src.name.substring(0, src.name.lastIndexOf("."));

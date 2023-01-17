@@ -39,7 +39,7 @@ export async function valgrind(interaction: ChatInputCommandInteraction) {
     writeSync(openSync(join(volume, code.name), "w"), data)
 
     //executing runcontainer.sh ...args
-    let script = join(root, scripts, "runcontainer" + ext) + volume + join(sep, "home") + "valbot" + code.name;
+    let script = `${join(root, scripts, "runcontainer" + ext)} ${volume} ${join(sep, "home")} valbot ${code.name}`;
     const project = interaction.options.getString('project');
     if (project) {
         script += ` ${project} ${join(root, docker, "proj")}`;
@@ -49,7 +49,7 @@ export async function valgrind(interaction: ChatInputCommandInteraction) {
         reply.files = [ join(volume, code.name.substring(0, code.name.lastIndexOf("."))) + ".txt" ];
     }
     catch (er) {
-        reply.content = `${code.name} compilation failed. Please ensure your code compiles before looking for memory leaks, or that you attached the correct file.`;
+        reply.content = `${code.name} compilation failed. Ensure your code compiles before looking for memory leaks and that you attached the correct file.`;
         console.log(er);
     }
     

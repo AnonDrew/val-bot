@@ -8,6 +8,14 @@ export function interactionCreate(client: Client) {
             const command = interaction.options.getSubcommand(false) ?? interaction.commandName;
             importContents<Function>(handlers).find(handler => handler.name === command)(interaction);
         }
+        else if (interaction.isStringSelectMenu()) {
+            try {
+                importContents<Function>(handlers).find(handler => handler.name === interaction.customId)(interaction);
+            }
+            catch (er) {
+                console.log(er);
+            }
+        }
         else if (interaction.isRepliable()) {
             interaction.reply({
                 ephemeral: true,

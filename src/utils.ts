@@ -1,3 +1,6 @@
+import { root } from "../config.json";
+import { execSync } from "node:child_process";
+import { join } from "node:path";
 /**
  * Returns an array of an imports data. Type safety undetermined.
  */
@@ -35,6 +38,7 @@ export function msToDHMS(ms: number) {
  * Returns data contained in body of response from url.
  */
 export const resource = async (url: string) => (await (await fetch(url)).body.getReader().read()).value;
+export const fetchFiles = (dir: string) => execSync(`${join(root, scripts, `dirfiles${ext}`)} ${dir}`).toString().trim().split('\n');
 
 export const ext = ".sh";
 export const scripts = "sh";

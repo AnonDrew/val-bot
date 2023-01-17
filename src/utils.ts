@@ -31,3 +31,4 @@ export function msToDHMS(ms: number) {
     return uptime;
 }
 export const resource = async (url: string) => (await (await fetch(url)).body.getReader().read()).value;
+export const ext = ".sh";

@@ -1,27 +1,9 @@
 import { root } from "../../config.json";
-import {
-    mkdtempSync,
-    rm,
-    openSync,
-    writeSync
-}
-from "node:fs";
+import { mkdtempSync, rm, openSync, writeSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { join, sep } from "node:path";
-import {
-    Attachment,
-    ChatInputCommandInteraction,
-    Client,
-    InteractionReplyOptions
-}
-from "discord.js";
-import {
-    ext,
-    resource,
-    docker,
-    scripts
-}
-from "../utils";
+import { Attachment, ChatInputCommandInteraction, Client, InteractionReplyOptions } from "discord.js";
+import { ext, resource, docker, scripts } from "../utils";
 
 //handle DoS/DDoS (limit how many times the command can be used)
 
@@ -38,7 +20,7 @@ function validate(reply: InteractionReplyOptions, code: Attachment) {
     return true;
 }
 
-export async function valgrind(interaction: ChatInputCommandInteraction, client: Client) {
+export async function valgrind(interaction: ChatInputCommandInteraction) {
     const reply: InteractionReplyOptions = { ephemeral: true };
     const code = interaction.options.getAttachment('code');
     if (!validate(reply, code)) {

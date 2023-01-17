@@ -7,7 +7,7 @@ export function importContents<T>(importObject: Object): T[] {
     return contents;
 }
 /**
- * Returns a string in the format of d, h, m, s
+ * Returns a string in the format of d, h, m, s.
  */
 export function msToDHMS(ms: number) {
     const s=1000, m=s*60, h=m*60, d=h*24
@@ -31,6 +31,9 @@ export function msToDHMS(ms: number) {
 
     return uptime.slice(0, -2);
 }
+/**
+ * Returns data contained in body of response from url.
+ */
 export const resource = async (url: string) => (await (await fetch(url)).body.getReader().read()).value;
 
 export const ext = ".sh";

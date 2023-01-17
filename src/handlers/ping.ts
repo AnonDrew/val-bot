@@ -1,7 +1,9 @@
-import { ChatInputCommandInteraction, Client, EmbedBuilder } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder } from "discord.js";
 import { msToDHMS } from "../utils";
 
-export function ping(interaction: ChatInputCommandInteraction, client: Client) {
+export function ping(interaction: ChatInputCommandInteraction) {
+    const { client } = interaction;
+
     const embed = new EmbedBuilder()
     .setColor("#e39717")
     .setDescription(

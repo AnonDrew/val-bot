@@ -13,7 +13,7 @@ import { execSync } from "node:child_process";
 import { join } from "node:path";
 import { resource, ext, docker, scripts } from "../utils";
 
-export async function upload(interaction: ChatInputCommandInteraction, client: Client) {
+export async function upload(interaction: ChatInputCommandInteraction) {
     let attachment = interaction.options.getAttachment('archive', true), reply: InteractionReplyOptions = { ephemeral: true };
     let { commands } = interaction.client.application;
 

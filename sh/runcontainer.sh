@@ -10,7 +10,7 @@ projDir=$6;
 cppNoExt=${cpp%.*};
 
 if [ ! $# -eq 4 -a ! $# -eq 6 ]; then
-    echo "Invalid argument count. Must be 4 or 6.";
+    echo "Invalid argument count. Must be 4 or 6." >&2;
     exit 1;
 fi
 
@@ -18,12 +18,12 @@ if [ $# -eq 6 ]; then
     projExt1=${proj#*.};
     projExt2=${projExt1%.*};
 
-    if [ $projExt1 -eq "zip" ]; then
+    if [ $projExt1 = "zip" ]; then
         unzip $projDir/$proj -d $hostDir;
-    elif [ $projExt2 -eq "tar" ]; then
+    elif [ $projExt2 = "tar" ]; then
         tar -xf $projDir/$proj -C $hostDir;
     else
-        echo "Unsupported archive format.";
+        echo "Unsupported archive format." >&2;
         exit 1;
     fi
 fi

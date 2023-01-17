@@ -36,30 +36,28 @@ if (projectOptions?.choices?.length > 0) {
     valgrind.addStringOption(projectOptions);
 }
 
+const ping = new SlashCommandBuilder()
+.setName("ping")
+.setDescription("Check the status of the bot.")
+
+const upload = new SlashCommandBuilder()
+//Put this first to avoid Omit<> type; would need an "as" cast otherwise to get rid of it
+.addAttachmentOption(
+    new SlashCommandAttachmentOption()
+    .setName("archive")
+    .setDescription("A zip archive containing your project files.")
+    .setRequired(true)
+)
+.setName("upload")
+.setDescription("Upload project archives to the bot.");
+
+const remove = new SlashCommandBuilder()
+.setName("remove")
+.setDescription("Remove uploaded project archives.");
+
 export const commands = [
-
     valgrind,
-
-    new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Check the status of the bot.")
-    ,
-
-    new SlashCommandBuilder()
-    //Put this first to avoid Omit<> type; would need an "as" cast otherwise to get rid of it
-    .addAttachmentOption(
-        new SlashCommandAttachmentOption()
-        .setName("archive")
-        .setDescription("A zip archive containing your project files.")
-        .setRequired(true)
-    )
-    .setName("upload")
-    .setDescription("Upload project archives to the bot.")
-    ,
-
-    new SlashCommandBuilder()
-    .setName("remove")
-    .setDescription("Remove uploaded project archives.")
-    ,
-    
+    ping,
+    upload,
+    remove
 ];

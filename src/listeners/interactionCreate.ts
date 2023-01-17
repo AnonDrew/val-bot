@@ -9,6 +9,9 @@ export function interactionCreate(client: Client) {
             importContents<Function>(handlers).find(handler => handler.name === command)(interaction);
         }
         else if (interaction.isStringSelectMenu()) {
+            // I don't know if this does anything
+            // but someone can dismiss the select menu while the interaction is loading
+            // Discord please fix
             try {
                 importContents<Function>(handlers).find(handler => handler.name === interaction.customId)(interaction);
             }

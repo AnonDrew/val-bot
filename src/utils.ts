@@ -38,8 +38,19 @@ export function msToDHMS(ms: number) {
  * Returns data contained in body of response from url.
  */
 export const resource = async (url: string) => (await (await fetch(url)).body.getReader().read()).value;
+/**
+ * Returns an array of strings containing the full name of all files in dir.
+ */
 export const fetchFiles = (dir: string) => execSync(`${join(root, scripts, `dirfiles${ext}`)} ${dir}`).toString().trim().split('\n');
-
+/**
+ * The file extension of the shell scripts.
+ */
 export const ext = ".sh";
+/**
+ * The name of the directory containing all shell related files.
+ */
 export const scripts = "sh";
+/**
+ * The name of the directory containing all docker related files.
+ */
 export const docker = "docker";

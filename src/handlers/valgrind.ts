@@ -40,7 +40,7 @@ export async function valgrind(interaction: ChatInputCommandInteraction) {
 
     //executing runcontainer.sh ...args
     let script = `${join(root, scripts, "runcontainer" + ext)} ${volume} ${join(sep, "home")} valbot ${code.name}`;
-    const project = interaction.options.getString('project');
+    const project = interaction.options.getString("project");
     if (project) {
         script += ` ${project} ${join(root, docker, "proj")}`;
     }

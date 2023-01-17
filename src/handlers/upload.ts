@@ -19,6 +19,8 @@ export async function upload(interaction: ChatInputCommandInteraction) {
 
     try {
         writeSync(openSync(join(root, docker, "proj", attachment.name), 'w'), await resource(attachment.url));
+
+        //executing dirfiles.sh arg1
         let projNames = execSync(`${join(root, scripts, `dirfiles${ext}`)} ${join(root, docker, "proj")}`).toString().trim().split('\n');
 
         // using .edit() would be ideal here, but I was unable to use builders, which was a pain

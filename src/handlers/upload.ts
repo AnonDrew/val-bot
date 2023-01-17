@@ -10,15 +10,16 @@ import {
 from "discord.js";
 import { writeSync, openSync } from "node:fs";
 import { execSync } from "node:child_process";
-import { resource, ext } from "../utils";
+import { join } from "node:path";
+import { resource, ext, docker, scripts } from "../utils";
 
 export async function upload(interaction: ChatInputCommandInteraction, client: Client) {
     let attachment = interaction.options.getAttachment('archive', true), reply: InteractionReplyOptions = { ephemeral: true };
     let { commands } = interaction.client.application;
 
     try {
-        writeSync(openSync(`${root}/docker/proj/${attachment.name}`, 'w'), await resource(attachment.url));
-        let projNames = execSync(`${root}/bash/dircontent${ext} ${root}/docker/proj`).toString().trim().split('\n');
+        writeSync(openSync(join(root, docker, "proj", attachment.name), 'w'), await resource(attachment.url));
+        let projNames = execSync(`${join(root, scripts, `dirfiles${ext}`)} ${join(root, docker, "proj")}`).toString().trim().split('\n');
 
         // using .edit() would be ideal here, but I was unable to use builders, which was a pain
         // benefits would be 2 less setter calls for name and description (editing the options overwrites the previous options array)
@@ -45,7 +46,7 @@ export async function upload(interaction: ChatInputCommandInteraction, client: C
         reply.content = "Upload successful. It may take a bit for the valgrind slash command to become available again.";
     }
     catch (e) {
-        reply.content = "Something went wrong with the upload";
+        reply.content = "Something went wrong with the upload.";
         console.log("Error uploading\n", interaction.member, "\n", attachment, "\n", e);
     }
 

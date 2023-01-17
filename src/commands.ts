@@ -14,7 +14,7 @@ export const commands = [
     ,
 
     new SlashCommandBuilder()
-    //Put this first to avoid Omit<> type; would need an "as" cast otherwise to rid it
+    //Put this first to avoid Omit<> type; would need an "as" cast otherwise to get rid of it
     .addAttachmentOption(
         new SlashCommandAttachmentOption()
         .setName('archive')

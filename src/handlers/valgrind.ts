@@ -1,46 +1,76 @@
 import { root } from "../../config.json";
-import { mkdirSync, openSync, writeSync } from "node:fs";
+import {
+    mkdtempSync,
+    rm,
+    openSync,
+    writeSync
+}
+from "node:fs";
 import { execSync } from "node:child_process";
-import { ChatInputCommandInteraction, Client, Message } from "discord.js";
-import { ext, resource } from "../utils";
+import { join, sep } from "node:path";
+import {
+    Attachment,
+    ChatInputCommandInteraction,
+    Client,
+    InteractionReplyOptions
+}
+from "discord.js";
+import {
+    ext,
+    resource,
+    docker,
+    scripts
+}
+from "../utils";
 
 //handle DoS/DDoS (limit how many times the command can be used)
 
-function cleanUpDM(message: Message) { setTimeout(() => message.delete(), 20000); }
-
-export async function valgrindDM(message: Message) {
-    let attachment = message.attachments.first(), data = await resource(attachment.url);
-    if (!data) {
-        message.channel.send("There was an issue obtaining your attachment.").then(cleanUpDM);
-        return;
+function validate(reply: InteractionReplyOptions, code: Attachment) {
+    const SIZE_LIMIT = 524000/*b*/;
+    if (code.contentType !== "text/x-c++src; charset=utf-8") {
+        reply.content = "Incorrect content type. Valgrind only works with C++ source code...";
+        return false;
     }
-
-    let hostMntPath = root + "/docker/in/tmp" + Math.floor(Math.random() * Math.pow(10, 6));
-    mkdirSync(hostMntPath);
-    writeSync(openSync(`${hostMntPath}/${attachment.name}`, "w"), data);
-    try {
-        console.log(execSync(`${root}/bash/runcontainer${ext} ${hostMntPath} /home valbot ${attachment.name}`).toString());
-        await message.channel.send({
-            content: `This message will be deleted in a couple seconds. Download the attachment or copy the contents.`,
-            files: [
-                `${hostMntPath}/${attachment.name.substring(0, attachment.name.lastIndexOf("."))}.txt`,
-            ],
-        })
-        .then(cleanUpDM, (er) => console.log("Could not properly send compilation results."));
+    if (code.size > SIZE_LIMIT) {
+        reply.content = `Your file is too large. The current limit is ${SIZE_LIMIT/1000}KB.`
+        return false;
     }
-    catch (er) {
-        message.channel.send(`${attachment.name} compilation failed`).then(cleanUpDM);
-        console.log(er);
-    }
-
-    try {
-       execSync(`rm -R ${hostMntPath}`);
-    }
-    catch (er) {
-       console.log("ECLEAN: " + hostMntPath + " was not removed\n", er);
-    }
+    return true;
 }
 
 export async function valgrind(interaction: ChatInputCommandInteraction, client: Client) {
+    const reply: InteractionReplyOptions = { ephemeral: true };
+    const code = interaction.options.getAttachment('code');
+    if (!validate(reply, code)) {
+        interaction.reply(reply);
+        return;
+    }
+
+    const data = await resource(code.url);
+    if (!data) {
+        reply.content = "There was an issue fetching your attachment. Try again or wait some time.";
+        interaction.reply(reply);
+        return;
+    }
+
+    const project = interaction.options.getString('project');
+    const volume = mkdtempSync(join(root, docker, "in", "tmp"));
+    writeSync(openSync(join(volume, code.name), "w"), data)
+
+    //executing runcontainer.sh ...args
+    let script = `${join(root, scripts, "runcontainer" + ext)} ${volume} ${join(sep, "home")} valbot ${code.name}`;
+    if (project) {
+        script += ` ${project} ${join(root, docker, "proj")}`;
+    }
+    try {
+        execSync(script);
+        reply.files = [ join(volume, code.name.substring(0, code.name.lastIndexOf("."))) + ".txt" ];
+    }
+    catch (er) {
+        reply.content = `${code.name} compilation failed. Please ensure your code compiles before looking for memory leaks.`;
+        console.log(er);
+    }
     
+    interaction.reply(reply);
+    rm(volume, { recursive: true }, ()=>{});
 }

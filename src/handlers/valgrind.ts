@@ -1,29 +1,39 @@
 import { root } from "../../config.json";
-import { mkdtempSync, rm, openSync, writeSync } from "node:fs";
+import {
+    mkdtempSync,
+    rm,
+    openSync,
+    writeSync
+}
+from "node:fs";
 import { execSync } from "node:child_process";
 import { join, sep } from "node:path";
-import { Attachment, ChatInputCommandInteraction, Client, InteractionReplyOptions } from "discord.js";
-import { ext, resource, docker, scripts } from "../utils";
+import {
+    ChatInputCommandInteraction,
+    InteractionReplyOptions
+}
+from "discord.js";
+import {
+    ext,
+    resource,
+    docker,
+    scripts
+}
+from "../utils";
 
 //handle DoS/DDoS (limit how many times the command can be used)
-
-function validate(reply: InteractionReplyOptions, code: Attachment) {
-    const SIZE_LIMIT = 524000/*b*/;
-    if (code.contentType !== "text/x-c++src; charset=utf-8") {
-        reply.content = "Incorrect content type. Valgrind only works with C++ source code...";
-        return false;
-    }
-    if (code.size > SIZE_LIMIT) {
-        reply.content = `Your file is too large. The current limit is ${SIZE_LIMIT/1000}KB.`
-        return false;
-    }
-    return true;
-}
 
 export async function valgrind(interaction: ChatInputCommandInteraction) {
     const reply: InteractionReplyOptions = { ephemeral: true };
     const code = interaction.options.getAttachment('code');
-    if (!validate(reply, code)) {
+    const SIZE_LIMIT = 524000/*b*/;
+    if (code.contentType !== "text/x-c++src; charset=utf-8") {
+        reply.content = "Incorrect content type. Valgrind only works with C++ source code...";
+        interaction.reply(reply);
+        return;
+    }
+    if (code.size > SIZE_LIMIT) {
+        reply.content = `Your file is too large. The current limit is ${SIZE_LIMIT/1000}KB.`
         interaction.reply(reply);
         return;
     }
@@ -49,7 +59,7 @@ export async function valgrind(interaction: ChatInputCommandInteraction) {
         reply.files = [ join(volume, code.name.substring(0, code.name.lastIndexOf("."))) + ".txt" ];
     }
     catch (er) {
-        reply.content = `${code.name} compilation failed. Ensure your code compiles before looking for memory leaks and that you attached the correct file.`;
+        reply.content = `${code.name} compilation failed. Ensure your code compiles before looking for memory leaks and that you've attached the correct file.`;
         console.log(er);
     }
     

@@ -43,5 +43,5 @@ $image \
 /bin/bash -c \
 "\
 g++ -o $contDir/$cppNoExt.out --std=c++17 $contDir/$cpp && \
-valgrind --log-file=\"$contDir/$cppNoExt.txt\" --track-origins=yes --leak-check=full $contDir/$cppNoExt.out\
+valgrind --track-origins=yes --leak-check=full $contDir/$cppNoExt.out &> $contDir/$cppNoExt.txt\
 ";

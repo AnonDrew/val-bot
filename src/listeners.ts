@@ -1,10 +1,10 @@
-import { Client, Collection } from "discord.js";
+import { Client } from "discord.js";
 import { commands } from "./commands";
 import { importContents } from "./utils";
 import * as handlers from "./handlers";
 
-//map instead of a set so that cooldown timers can be tracked if time left is needed
-let cooldowns = new Collection<string, number>();
+//map instead of a set an be used if time left needs to be tracked
+let cooldowns = new Set<string>();
 
 export function ready(client: Client) {
     client.once("ready", async () => {
@@ -27,7 +27,7 @@ export function interactionCreate(client: Client) {
                 return;
             }
             else {
-                cooldowns.set(user.id, cooldown)
+                cooldowns.add(user.id)
                 setTimeout(() => cooldowns.delete(user.id), cooldown);
             }
 

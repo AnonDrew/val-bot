@@ -3,6 +3,7 @@ import { commands } from "./commands";
 import { importContents } from "./utils";
 import * as handlers from "./handlers";
 
+//map instead of a set so that cooldown timers can be tracked if time left is needed
 let cooldowns = new Collection<string, number>();
 
 export function ready(client: Client) {
@@ -17,7 +18,7 @@ export function interactionCreate(client: Client) {
         const { user } = interaction.member, cooldown = 15000/*ms*/;
         if (interaction.isChatInputCommand()) {
             const command = interaction.options.getSubcommand(false) ?? interaction.commandName;
-            
+
             if (command === "valgrind" && cooldowns.has(user.id)) {
                 interaction.reply({
                     ephemeral: true,

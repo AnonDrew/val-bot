@@ -59,7 +59,13 @@ export async function valgrind(interaction: ChatInputCommandInteraction) {
         reply.files = [ join(volume, code.name.substring(0, code.name.lastIndexOf("."))) + ".txt" ];
     }
     catch (er) {
-        reply.content = `${code.name} compilation failed. Ensure your code compiles before looking for memory leaks and that you've attached the correct file.`;
+        reply.content =
+        `${code.name} compilation failed.\n\n` +
+        "Ensure that...\n" +
+        "\tYour code compiles before looking for memory leaks\n" +
+        "\tYou have provided the correct file\n" +
+        "\tYour program arguments are correct";
+
         console.log(er);
     }
     

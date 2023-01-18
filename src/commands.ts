@@ -9,7 +9,7 @@ import { join } from "node:path";
 import { docker, fetchFiles } from "./utils";
 
 export function projectStringOption(desc?: string) {
-    let fileNames = fetchFiles(join(root, docker, "proj")).filter(file => file.length > 0).map(file => ({ name: file, value: file }));
+    let fileNames = fetchFiles(join(root, docker, "proj")).map(file => ({ name: file, value: file }));
     let option = new SlashCommandStringOption()
     .setName("project")
     .setDescription(desc ?? "Which project your file is for. If ommitted, a single .cpp file is expected.");

@@ -41,7 +41,7 @@ export const resource = async (url: string) => (await (await fetch(url)).body.ge
 /**
  * Returns an array of strings containing the full name of all files in dir.
  */
-export const fetchFiles = (dir: string) => execSync(`${join(root, scripts, `dirfiles${ext}`)} ${dir}`).toString().trim().split('\n');
+export const fetchFiles = (dir: string) => execSync(`${join(root, scripts, `dirfiles${ext}`)} ${dir}`).toString().trim().split('\n').filter(file => file.length > 0);
 /**
  * The file extension of the shell scripts.
  */

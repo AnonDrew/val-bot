@@ -1,7 +1,7 @@
 Thanks to [@niklassheth](https://github.com/niklassheth "niklassheth's profile") for the broad idea, telling me about docker, and assisting me with docker troubles I ran into as this was the first time I ever used docker for anything.
 
 # Valbot
-This simple bot was made with the goal of providing an alternative way for the abundance of Macbook users at my college to use Valgrind on their C++ assignments, as Valgrind can be troublesome or tedious to setup depending on the OSX version.
+This simple bot was made with the goal of providing an alternative way for the abundance of Macbook users at my community college to use Valgrind on their C++ assignments to check for memory leaks, as Valgrind can be troublesome or tedious to setup depending on the macOS version.
 
 # Features
 Administrators of a Discord server can upload zipped project files that are provided by the course instructors to the machine the bot is running on, as well as remove them when they are no longer necessary, using the `upload` and `remove` commands.
@@ -11,6 +11,10 @@ Users can select which project they need and then upload their work so that the 
 All user uploaded files are downloaded and stored into a temporary directory on the host machine. That code is then mounted as a volume, compiled, then ran inside of a docker container to protect against malicious code. Once the docker container is ran, the valgrind output file is then stored in the same temporary directory to be sent as an attachment by the bot to Discord. The directory and all contents are then completely removed.
 
 All responses of the bot to the user of the `valgrind` command are ephemeral to provide privacy and protection from other users in the server.
+
+Every user has a cooldown between `valgrind` command uses to prevent overuse of the bot.
+
+Users are encouraged make sure their code compiles before using the bot when compilation fails as to not use the bot as a compilation tool. The bot intentionally does not provide compilation error output.
 
 There is a `ping` command to check the status of the bot.
 

@@ -1,4 +1,4 @@
-Thanks to @niklassheth for the broad idea, telling me about docker, and assisting me with docker troubles I ran into as this was the first time I ever used docker for anything.
+Thanks to [@niklassheth](https://github.com/niklassheth "niklassheth's profile") for the broad idea, telling me about docker, and assisting me with docker troubles I ran into as this was the first time I ever used docker for anything.
 
 # Valbot
 This simple bot was made with the goal of providing an alternative way for the abundance of Macbook users at my college to use Valgrind on their C++ assignments, as Valgrind can be troublesome or tedious to setup depending on the OSX version.
@@ -23,7 +23,7 @@ A `config.json` file needs to be located in the project root, containing the fol
 }
 ```
 
-My college has a discord server for CS students that good friend of mine @danwien8 created, Fall 2021. This bot was made for that server.
+My college has a discord server for CS students that good friend of mine [@danwien8](https://github.com/danwien8 "danwien8's profile") created, Fall 2021. This bot was made for that server.
 
 The method of distributing project files is just how instructors at my college handle assignments. They provide a bunch of files, and it is up to the student to implement 1 or more files. For example, the OOP course tends to have students implement and submit several files (headers & implementation), while the data structures & algorithms course tends to be a single file submission (implementation).
 

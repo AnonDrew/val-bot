@@ -1,6 +1,6 @@
 Thanks to [@niklassheth](https://github.com/niklassheth "niklassheth's profile") for the broad idea, telling me about docker, and assisting me with docker troubles I ran into as this was the first time I ever used docker for anything.
 
-# Valbot
+# Val-bot
 This simple bot was made with the goal of providing an alternative way for the abundance of Macbook users at my community college to use Valgrind on their C++ assignments to check for memory leaks, as Valgrind can be troublesome or tedious to setup depending on the macOS version.
 
 # Features
